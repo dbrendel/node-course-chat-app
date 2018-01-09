@@ -20,14 +20,11 @@ io.on('connection', (socket) => {
 
 	socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined chat-app'));
 
-	socket.on('createMessage', (message) => {
+	socket.on('createMessage', (message, callback) => {
 		console.log('Created message', message);
-		io.emit('newMessage', generateMessage('message.from, message.text'));
-		// socket.broadcast.emit('newMessage', {
-		// 	from: message.from,
-		// 	text: message.text,
-		// 	createdAt: new Date().getTime()
-		// });
+		io.emit('newMessage', generateMessage(message.from, message.text));
+		// socket.broadcast.emit('newMessage', generateMessage(message.from, message.text));
+		if (typeof callback === 'function') callback('');
 	});
 
 	socket.on('disconnect', () => {
